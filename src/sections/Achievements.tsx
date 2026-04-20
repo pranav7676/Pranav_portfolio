@@ -4,27 +4,33 @@ import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedText } from "@/components/ui/AnimatedText";
 import { motion } from "framer-motion";
-import { Trophy, Award, BookOpen } from "lucide-react";
+import { Trophy, Award, BookOpen, Keyboard } from "lucide-react";
 
 export function Achievements() {
   const achievements = [
+    {
+      title: "Guinness World Record",
+      type: "World Record",
+      icon: <Keyboard strokeWidth={1.5} className="w-8 h-8 text-[--color-primary-accent]" />,
+      desc: "Achieved a Guinness World Record in fast-paced keyboard typing/accuracy.",
+    },
+    {
+      title: "Defy'26 Hackathon",
+      type: "Competition",
+      icon: <Trophy strokeWidth={1.5} className="w-8 h-8 text-[--color-primary-accent]" />,
+      desc: "Winner/Participant at the prestigious Defy'26 Hackathon, building innovative solutions.",
+    },
+    {
+      title: "Hackhazards Winner",
+      type: "Hackathon",
+      icon: <Trophy strokeWidth={1.5} className="w-8 h-8 text-[--color-primary-accent]" />,
+      desc: "Top performer at Hackhazards, developing high-impact projects under tight constraints.",
+    },
     {
       title: "AWS Certified Developer",
       type: "Certification",
       icon: <Award strokeWidth={1.5} className="w-8 h-8 text-[--color-primary-accent]" />,
       desc: "Validated expertise in developing and maintaining AWS-based applications.",
-    },
-    {
-      title: "Hackathon Winner - Smart India",
-      type: "Competition",
-      icon: <Trophy strokeWidth={1.5} className="w-8 h-8 text-[--color-primary-accent]" />,
-      desc: "Built an AI-driven traffic optimization system winning 1st place out of 500+ teams.",
-    },
-    {
-      title: "Merit Scholarship",
-      type: "Academic",
-      icon: <BookOpen strokeWidth={1.5} className="w-8 h-8 text-[--color-primary-accent]" />,
-      desc: "Awarded top 1% academic excellence scholarship for 3 consecutive years.",
     },
   ];
 
@@ -32,7 +38,7 @@ export function Achievements() {
     <SectionWrapper id="achievements">
       <AnimatedText text="Achievements" el="h2" className="text-4xl font-bold mb-16 text-center" asGradient />
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {achievements.map((item, index) => (
           <motion.div
             key={index}

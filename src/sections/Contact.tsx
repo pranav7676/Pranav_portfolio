@@ -1,13 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedText } from "@/components/ui/AnimatedText";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { Mail } from "lucide-react";
-import { motion } from "framer-motion";
+import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function Contact() {
+  const [isSubmitted, setIsSubmitted] = useState(false);
   return (
     <SectionWrapper id="contact" className="relative mb-24">
       {/* Background Glow Orb */}
@@ -23,68 +26,113 @@ export function Contact() {
           </p>
 
           <div className="flex flex-col gap-6">
-            <a href="mailto:contact@mpranav.io" className="flex items-center gap-4 text-[--color-soft-neutral] hover:text-[--color-primary-accent] transition-colors group">
+            <a href="mailto:pranavmani2018@gmail.com" className="flex items-center gap-4 text-[--color-soft-neutral] hover:text-[--color-primary-accent] transition-colors group">
               <div className="p-3 bg-white/[0.04] rounded-full border border-[--color-secondary-neutral] group-hover:border-[--color-primary-accent] transition-colors">
                 <Mail className="w-5 h-5" />
               </div>
-              <span className="text-lg">contact@mpranav.io</span>
+              <span className="text-lg">pranavmani2018@gmail.com</span>
             </a>
-            <a href="#" className="flex items-center gap-4 text-[--color-soft-neutral] hover:text-[--color-primary-accent] transition-colors group">
+            <a href="https://github.com/pranav7676" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-[--color-soft-neutral] hover:text-[--color-primary-accent] transition-colors group">
               <div className="p-3 bg-white/[0.04] rounded-full border border-[--color-secondary-neutral] group-hover:border-[--color-primary-accent] transition-colors">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3-.3 6-1.5 6-6.5a4.8 4.8 0 0 0-1.4-3.5 4.8 4.8 0 0 0-.1-3.5s-1-.3-3.5 1.4a11.5 11.5 0 0 0-6 0C5.5 1.6 4.4 1.9 4.4 1.9a4.8 4.8 0 0 0-.1 3.5 4.8 4.8 0 0 0-1.4 3.5c0 5 3 6.2 6 6.5a4.8 4.8 0 0 0-1 3.2v4" />
-                  <path d="M9 20c-4 1.5-6-1-6-1" />
-                </svg>
+                <GithubIcon size={20} />
               </div>
-              <span className="text-lg">github.com/mpranav</span>
+              <span className="text-lg">github.com/pranav7676</span>
             </a>
-            <a href="#" className="flex items-center gap-4 text-[--color-soft-neutral] hover:text-[--color-primary-accent] transition-colors group">
+            <a href="https://www.linkedin.com/in/pranavm1305" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-[--color-soft-neutral] hover:text-[--color-primary-accent] transition-colors group">
               <div className="p-3 bg-white/[0.04] rounded-full border border-[--color-secondary-neutral] group-hover:border-[--color-primary-accent] transition-colors">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                  <rect width="4" height="12" x="2" y="9" />
-                  <circle cx="4" cy="4" r="2" />
-                </svg>
+                <LinkedinIcon size={20} />
               </div>
-              <span className="text-lg">linkedin.com/in/mpranav</span>
+              <span className="text-lg">linkedin.com/in/pranavm1305</span>
             </a>
           </div>
         </div>
 
         <GlassCard className="p-8">
-          <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="name" className="text-sm font-medium text-[--color-soft-neutral]">Name</label>
-              <input
-                type="text"
-                id="name"
-                className="bg-white/5 border border-[--color-secondary-neutral] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[--color-primary-accent] focus:ring-1 focus:ring-[--color-primary-accent] transition-all"
-                placeholder="John Doe"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-sm font-medium text-[--color-soft-neutral]">Email</label>
-              <input
-                type="email"
-                id="email"
-                className="bg-white/5 border border-[--color-secondary-neutral] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[--color-primary-accent] focus:ring-1 focus:ring-[--color-primary-accent] transition-all"
-                placeholder="john@example.com"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="message" className="text-sm font-medium text-[--color-soft-neutral]">Message</label>
-              <textarea
-                id="message"
-                rows={4}
-                className="bg-white/5 border border-[--color-secondary-neutral] rounded-lg px-4 py-3 text-white resize-none focus:outline-none focus:border-[--color-primary-accent] focus:ring-1 focus:ring-[--color-primary-accent] transition-all"
-                placeholder="How can I help you?"
-              ></textarea>
-            </div>
-            
-            <AnimatedButton type="submit" className="w-full mt-4">
-              Send Message
-            </AnimatedButton>
-          </form>
+          <AnimatePresence mode="wait">
+            {!isSubmitted ? (
+              <motion.form 
+                key="contact-form"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex flex-col gap-6" 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setIsSubmitted(true);
+                }}
+              >
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="name" className="text-sm font-medium text-[--color-soft-neutral]">Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    required
+                    className="bg-white/5 border border-[--color-secondary-neutral] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[--color-primary-accent] focus:ring-1 focus:ring-[--color-primary-accent] transition-all"
+                    placeholder="John Doe"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="email" className="text-sm font-medium text-[--color-soft-neutral]">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    required
+                    className="bg-white/5 border border-[--color-secondary-neutral] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[--color-primary-accent] focus:ring-1 focus:ring-[--color-primary-accent] transition-all"
+                    placeholder="john@example.com"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="message" className="text-sm font-medium text-[--color-soft-neutral]">Message</label>
+                  <textarea
+                    id="message"
+                    required
+                    rows={4}
+                    className="bg-white/5 border border-[--color-secondary-neutral] rounded-lg px-4 py-3 text-white resize-none focus:outline-none focus:border-[--color-primary-accent] focus:ring-1 focus:ring-[--color-primary-accent] transition-all"
+                    placeholder="How can I help you?"
+                  ></textarea>
+                </div>
+                
+                <AnimatedButton type="submit" className="w-full mt-4">
+                  Send Message
+                </AnimatedButton>
+              </motion.form>
+            ) : (
+              <motion.div 
+                key="success-message"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex flex-col items-center justify-center py-12 text-center"
+              >
+                <div className="w-20 h-20 bg-[--color-primary-accent]/20 rounded-full flex items-center justify-center mb-6 border border-[--color-primary-accent]">
+                  <motion.svg 
+                    width="40" 
+                    height="40" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="var(--color-primary-accent)" 
+                    strokeWidth="3" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </motion.svg>
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
+                <p className="text-[--color-soft-neutral] max-w-[280px]">
+                  Thank you for reaching out. I&apos;ll get back to you as soon as possible.
+                </p>
+                <button 
+                  onClick={() => setIsSubmitted(false)}
+                  className="mt-8 text-[--color-primary-accent] text-sm hover:underline"
+                >
+                  Send another message
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </GlassCard>
       </div>
     </SectionWrapper>

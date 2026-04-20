@@ -4,13 +4,21 @@ import { Experience } from "@/sections/Experience";
 import { Projects } from "@/sections/Projects";
 import { Skills } from "@/sections/Skills";
 import { Achievements } from "@/sections/Achievements";
+import { Resume } from "@/sections/Resume";
 import { Contact } from "@/sections/Contact";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 import { CustomCursor } from "@/components/layout/CustomCursor";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
+import { BackToTop } from "@/components/ui/BackToTop";
 
 export default function Home() {
   return (
     <main className="w-full h-full min-h-screen">
+      <LoadingScreen />
       <CustomCursor />
+      <BackToTop />
+      <Navbar />
       
       <Hero />
       
@@ -22,13 +30,11 @@ export default function Home() {
       <Projects />
       <Skills />
       <Achievements />
+      <Resume />
       <Contact />
       
-      {/* Footer */}
-      <footer className="w-full py-8 border-t border-[--color-secondary-neutral]/20 text-center">
-        <p className="text-[--color-soft-neutral] text-sm">&copy; {new Date().getFullYear()} M Pranav. All rights reserved.</p>
-        <p className="text-[--color-secondary-neutral] text-xs mt-2">Designed and Engineered for the Future.</p>
-      </footer>
+      <Footer />
     </main>
   );
 }
+

@@ -1,36 +1,117 @@
+"use client";
+
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedText } from "@/components/ui/AnimatedText";
+import { motion } from "framer-motion";
+import { CheckCircle2, Star, Rocket, Trophy, Target, Cpu } from "lucide-react";
+
+import StatsCard from "@/components/ui/StatsCard";
+
+const stats = [
+  { label: "Projects", value: 20, suffix: "+" },
+  { label: "Internships", value: 1, suffix: "" },
+  { label: "Workshops", value: 2, suffix: "+" },
+  { label: "Conference", value: 1, suffix: "" },
+  { label: "Patent", value: 1, suffix: "" },
+  { label: "CGPA", value: 9.35, suffix: "" },
+  { label: "Hackathons", value: 8, suffix: "+" },
+];
+
+const highlights = [
+  "Full Stack Intern at Synergech",
+  "Published 1 Technical Patent",
+  "Presented at International Conferences",
+  "Active in 8+ Hackathons & Communities",
+];
+
+const whatIDo = [
+  "Build full-stack apps (React, Next.js, Node.js)",
+  "Design intuitive UI/UX systems",
+  "Work with real-time data & APIs",
+  "Explore AI-powered applications",
+];
 
 export function About() {
   return (
-    <SectionWrapper id="about" className="flex flex-col lg:flex-row items-center gap-16">
-      <div className="flex-1 space-y-6">
-        <AnimatedText text="About Me" el="h2" className="text-4xl font-bold" asGradient />
-        <p className="text-[--color-soft-neutral] text-lg leading-relaxed">
-          I am a passionate Full Stack Developer and AI Systems Builder focused on architecting
-          elegant, scalable solutions. With a deep understanding of both high-performance backend 
-          infrastructures and immersive, futuristic frontend interfaces, I engineer digital
-          experiences that don't just work—they feel alive.
-        </p>
-        <p className="text-[--color-soft-neutral] text-lg leading-relaxed">
-          Bridging the gap between artificial intelligence and human-centric design is what
-          moves me. I thrive in environments where creativity meets hardcore technical constraints.
-        </p>
-      </div>
-      <div className="flex-1 relative h-[400px] w-full max-w-md mx-auto perspective-1000">
-        <GlassCard className="absolute top-0 right-0 w-[80%] h-48 z-10 -rotate-3 hover:rotate-0 transition-transform duration-500 hover:z-30">
-          <h3 className="text-[--color-primary-accent] font-medium mb-2">My Focus</h3>
-          <p className="text-sm text-[--color-soft-neutral]">Engineering intelligent systems scaling to millions of users.</p>
-        </GlassCard>
-        <GlassCard className="absolute top-24 left-0 w-[80%] h-48 z-20 rotate-2 hover:rotate-0 transition-transform duration-500 hover:z-30">
-          <h3 className="text-[--color-primary-accent] font-medium mb-2">My Philosophy</h3>
-          <p className="text-sm text-[--color-soft-neutral]">Performance is a feature. Design is functionality.</p>
-        </GlassCard>
-        <GlassCard className="absolute bottom-12 right-12 w-[70%] h-48 z-10 rotate-6 hover:rotate-0 transition-transform duration-500 hover:z-30">
-          <h3 className="text-[--color-primary-accent] font-medium mb-2">My Arsenal</h3>
-          <p className="text-sm text-[--color-soft-neutral]">React, Next.js, WebGL, Node.js, Python, and bleeding-edge AI models.</p>
-        </GlassCard>
+    <SectionWrapper id="about">
+      <div className="flex flex-col lg:flex-row items-start gap-16">
+        {/* Left: Text Content */}
+        <div className="flex-[1.2] space-y-8">
+          <div className="space-y-4">
+            <AnimatedText text="About Me" el="h2" className="text-4xl md:text-5xl font-bold" asGradient />
+            <p className="text-[--color-soft-neutral] text-lg leading-relaxed max-w-2xl">
+              I&apos;m a passionate <span className="text-white font-semibold">Full Stack Developer</span> and 
+              <span className="text-[--color-primary-accent] font-semibold"> AI enthusiast</span> currently pursuing 
+              B.Tech in Computer Science at <span className="text-white">SRM IST</span> with a CGPA of 
+              <span className="text-[--color-primary-accent] font-bold"> 9.35</span>. I specialize in building 
+              scalable web applications, real-time systems, and intelligent interfaces that combine performance 
+              with user-centric design.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <Target size={20} className="text-[--color-primary-accent]" />
+                What I Do
+              </h3>
+              <ul className="space-y-3">
+                {whatIDo.map((item, i) => (
+                  <motion.li 
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex items-start gap-2 text-[--color-soft-neutral] text-sm"
+                  >
+                    <CheckCircle2 size={16} className="text-[--color-primary-accent] mt-1 shrink-0" />
+                    <span>{item}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <Star size={20} className="text-[--color-primary-accent]" />
+                Highlights
+              </h3>
+              <ul className="space-y-3">
+                {highlights.map((item, i) => (
+                  <motion.li 
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex items-start gap-2 text-[--color-soft-neutral] text-sm"
+                  >
+                    <CheckCircle2 size={16} className="text-[--color-primary-accent] mt-1 shrink-0" />
+                    <span>{item}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Stats Cards */}
+        <div className="flex-1 w-full relative grid grid-cols-2 md:grid-cols-3 gap-4">
+          {stats.map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <StatsCard value={stat.value as number} label={stat.label} suffix={stat.suffix} />
+            </motion.div>
+          ))}
+          
+          {/* Decorative Glowing Elements */}
+          <div className="absolute -top-12 -right-12 w-64 h-64 bg-[--color-primary-accent]/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-[--color-warm-accent]/10 rounded-full blur-[100px] pointer-events-none" />
+        </div>
       </div>
     </SectionWrapper>
   );

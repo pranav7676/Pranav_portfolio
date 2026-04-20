@@ -14,8 +14,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "M Pranav | Full Stack Developer",
-  description: "Building scalable systems with immersive UI and real-world impact",
+  title: "Pranav | Full Stack Developer & AI Enthusiast",
+  description: "Portfolio of M Pranav - Computer Science student at SRM IST, Full Stack Developer, and AI Systems Builder specializing in scalable web apps and immersive UI.",
+  keywords: ["Pranav", "Full Stack Developer", "AI Enthusiast", "SRM IST", "Next.js", "Portfolio", "Software Engineer"],
+  authors: [{ name: "M Pranav" }],
+  openGraph: {
+    title: "Pranav | Full Stack Developer",
+    description: "Building scalable systems with immersive UI and real-world impact.",
+    type: "website",
+    locale: "en_US",
+  },
 };
 
 export default function RootLayout({

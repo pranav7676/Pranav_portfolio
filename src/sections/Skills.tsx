@@ -1,42 +1,141 @@
 "use client";
 
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedText } from "@/components/ui/AnimatedText";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useRef } from "react";
+import { SkillsGlass } from "@/components/ui/SkillsGlass";
 
-const skillsData = {
-  Languages: ["TypeScript", "JavaScript", "Python", "C++", "Java", "SQL"],
-  Frameworks: ["Next.js", "React", "Node.js", "Express", "Tailwind CSS", "Framer Motion"],
-  Tools: ["Git", "Docker", "PostgreSQL", "MongoDB", "Figma", "AWS"],
-};
+const allSkills = [
+  // Frontend
+  "React.js", "Next.js", "Tailwind CSS", "Redux", "Framer Motion",
+  // Backend
+  "Node.js", "Express.js", "REST APIs", "GraphQL",
+  // Languages
+  "JavaScript", "TypeScript", "Python", "C++", "SQL",
+  // Tools
+  "Git", "GitHub", "Vercel", "Netlify", "Postman",
+  // Design
+  "Figma", "Framer", "Photoshop", "Spline", "Canva",
+  // AI & Data
+  "Machine Learning", "OpenAI APIs", "Data Analysis", "NLP Fundamentals"
+];
+
+function SkillItem({ skill, index, scrollYProgress }: { skill: string; index: number; scrollYProgress: any }) {
+  const total = allSkills.length;
+  // Use a smaller window for focus to make it feel snappier
+  const position = index / (total - 1);
+  const range = 0.1;
+  
+  const scale = useTransform(
+    scrollYProgress,
+    [position - range, position, position + range],
+    [0.7, 1.4, 0.7]
+  );
+
+  const opacity = useTransform(
+    scrollYProgress,
+    [position - range, position, position + range],
+    [0.2, 1, 0.2]
+  );
+
+  const blurValue = useTransform(
+    scrollYProgress,
+    [position - range, position, position + range],
+    [8, 0, 8]
+  );
+
+  const springScale = useSpring(scale, { stiffness: 100, damping: 20 });
+  const springOpacity = useSpring(opacity, { stiffness: 100, damping: 20 });
+  const filter = useTransform(blurValue, (v) => `blur(${v}px)`);
+
+  return (
+    <motion.div
+      style={{
+        scale: springScale,
+        opacity: springOpacity,
+        filter
+      }}
+      className="py-8 text-center flex items-center justify-center gap-4 group"
+    >
+      <span className="text-4xl md:text-8xl font-black tracking-tighter uppercase transition-colors duration-500 group-hover:text-[--color-primary-accent]">
+        {skill}
+      </span>
+    </motion.div>
+  );
+}
 
 export function Skills() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  // Transform to move the list vertically
+  // -100% means the last item is in the center
+  const y = useTransform(scrollYProgress, [0, 1], ["40%", "-40%"]);
+
   return (
-    <SectionWrapper id="skills">
-      <AnimatedText text="Technical Arsenal" el="h2" className="text-4xl font-bold mb-16 text-center" asGradient />
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {Object.entries(skillsData).map(([category, skills], idx) => (
-          <GlassCard key={category} className="flex flex-col items-center p-8">
-            <h3 className="text-xl font-bold text-[--color-primary-accent] mb-6">{category}</h3>
-            <div className="flex flex-wrap justify-center gap-3">
-              {skills.map((skill, index) => (
-                <motion.span
-                  key={skill}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 * index + idx * 0.2 }}
-                  whileHover={{ scale: 1.1, color: "var(--color-primary-bg)", backgroundColor: "var(--color-primary-accent)" }}
-                  className="px-4 py-2 bg-[--color-secondary-neutral]/20 text-[--color-soft-neutral] rounded-lg border border-[--color-secondary-neutral]/50 transition-colors duration-300 cursor-default"
-                >
-                  {skill}
-                </motion.span>
-              ))}
-            </div>
-          </GlassCard>
-        ))}
+    <SectionWrapper id="skills" className="px-0 relative mb-0">
+      <div className="px-6 md:px-12 lg:px-24 mb-16">
+        <AnimatedText 
+          text="Technical Arsenal" 
+          el="h2" 
+          className="text-4xl md:text-6xl font-bold mb-4" 
+          asGradient 
+        />
+        <p className="text-[--color-soft-neutral] text-xl max-w-2xl">
+          High-performance tools for high-impact systems.
+        </p>
+      </div>
+
+      <div 
+        ref={containerRef} 
+        className="h-[400vh] relative"
+      >
+        <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+          {/* Background Decor */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:5rem_5rem]" />
+          
+          {/* Center Focus Guide */}
+          <div className="absolute inset-x-0 h-32 md:h-48 border-y border-white/5 bg-white/[0.01] pointer-events-none z-0" />
+          
+          <motion.div 
+            style={{ y }}
+            className="w-full relative z-10 flex flex-col gap-4"
+          >
+            {allSkills.map((skill, i) => (
+              <SkillItem 
+                key={skill} 
+                skill={skill} 
+                index={i} 
+                scrollYProgress={scrollYProgress} 
+              />
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
+      <div className="mt-32">
+        <div className="px-6 md:px-12 lg:px-24 mb-16">
+          <AnimatedText text="Technical Powerhouse" el="h3" className="text-3xl md:text-5xl font-bold mb-4" />
+          <p className="text-[--color-soft-neutral] text-lg max-w-xl">
+            A deep dive into the frameworks and languages I've mastered.
+          </p>
+        </div>
+        <SkillsGlass category="technical" />
+      </div>
+
+      <div className="mt-40">
+        <div className="px-6 md:px-12 lg:px-24 mb-16">
+          <AnimatedText text="Core Strengths" el="h3" className="text-3xl md:text-5xl font-bold mb-4" asGradient />
+          <p className="text-[--color-soft-neutral] text-lg max-w-xl">
+            My cognitive and interpersonal skills that drive leadership and project execution.
+          </p>
+        </div>
+        <SkillsGlass category="core" />
       </div>
     </SectionWrapper>
   );
