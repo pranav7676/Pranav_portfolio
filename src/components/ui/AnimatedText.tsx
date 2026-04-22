@@ -50,8 +50,10 @@ export function AnimatedText({
     },
   };
 
+  const Tag = Wrapper as any;
+
   return (
-    <Wrapper className={className}>
+    <Tag className={className}>
       <motion.span
         variants={container}
         initial="hidden"
@@ -78,6 +80,6 @@ export function AnimatedText({
           );
         })}
       </motion.span>
-    </Wrapper>
+    </Tag>
   );
 }

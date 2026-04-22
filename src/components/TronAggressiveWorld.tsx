@@ -92,7 +92,7 @@ function Particles() {
   return (
     <points ref={ref}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" array={positions} count={positions.length / 3} itemSize={3} />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       {/* Subtler particles */}
       <pointsMaterial color="#8b5cf6" size={0.04} transparent opacity={0.3} sizeAttenuation />
