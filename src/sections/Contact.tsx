@@ -20,9 +20,9 @@ export function Contact() {
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10">
         <div>
-          <h3 className="text-3xl font-bold text-white mb-6">Let's build the future together.</h3>
+          <h3 className="text-3xl font-bold text-white mb-6">Let&apos;s build the future together.</h3>
           <p className="text-[--color-soft-neutral] text-lg mb-12">
-            Whether you have a question, a project idea, or just want to say hi, my inbox is always open. Let's make something incredible.
+            Whether you have a question, a project idea, or just want to say hi, my inbox is always open. Let&apos;s make something incredible.
           </p>
 
           <div className="flex flex-col gap-6">

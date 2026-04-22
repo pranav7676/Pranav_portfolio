@@ -1,10 +1,9 @@
 "use client";
 
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedText } from "@/components/ui/AnimatedText";
 import { motion } from "framer-motion";
-import { CheckCircle2, Star, Rocket, Trophy, Target, Cpu } from "lucide-react";
+import { CheckCircle2, Star, Target } from "lucide-react";
 
 import StatsCard from "@/components/ui/StatsCard";
 
@@ -41,8 +40,9 @@ export function About() {
           <div className="space-y-4">
             <AnimatedText text="About Me" el="h2" className="text-4xl md:text-5xl font-bold" asGradient />
             <p className="text-[--color-soft-neutral] text-lg leading-relaxed max-w-2xl">
-              I&apos;m a passionate <span className="text-white font-semibold">Full Stack Developer</span> and 
-              <span className="text-[--color-primary-accent] font-semibold"> AI enthusiast</span> currently pursuing 
+              I&apos;m a passionate <span className="text-white font-semibold">Full Stack Developer</span>,
+              <span className="text-[--color-primary-accent] font-semibold"> UI/UX Developer</span> and
+              <span className="text-[--color-primary-accent] font-semibold"> AI enthusiast</span> currently pursuing
               B.Tech in Computer Science at <span className="text-white">SRM IST</span> with a CGPA of 
               <span className="text-[--color-primary-accent] font-bold"> 9.35</span>. I specialize in building 
               scalable web applications, real-time systems, and intelligent interfaces that combine performance 

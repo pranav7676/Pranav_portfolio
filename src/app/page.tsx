@@ -3,19 +3,28 @@ import { About } from "@/sections/About";
 import { Experience } from "@/sections/Experience";
 import { Projects } from "@/sections/Projects";
 import { Skills } from "@/sections/Skills";
+import { Hobbies } from "@/sections/Hobbies";
 import { Achievements } from "@/sections/Achievements";
 import { Resume } from "@/sections/Resume";
 import { Contact } from "@/sections/Contact";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CustomCursor } from "@/components/layout/CustomCursor";
-import { LoadingScreen } from "@/components/ui/LoadingScreen";
+import { CursorSpotlight } from "@/components/layout/CursorSpotlight";
+import { CinematicIntro } from "@/components/layout/CinematicIntro";
 import { BackToTop } from "@/components/ui/BackToTop";
+import TronAggressiveWorld from "@/components/TronAggressiveWorld";
 
 export default function Home() {
   return (
-    <main className="w-full h-full min-h-screen">
-      <LoadingScreen />
+    <main className="relative w-full h-full min-h-screen">
+      {/* 3D BACKGROUND */}
+      <div className="fixed inset-0 -z-10">
+        <TronAggressiveWorld />
+      </div>
+      
+      <CinematicIntro />
+      <CursorSpotlight />
       <CustomCursor />
       <BackToTop />
       <Navbar />
@@ -29,6 +38,7 @@ export default function Home() {
       <Experience />
       <Projects />
       <Skills />
+      <Hobbies />
       <Achievements />
       <Resume />
       <Contact />

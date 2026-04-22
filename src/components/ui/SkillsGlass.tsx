@@ -1,19 +1,20 @@
 "use client";
 
 import Tilt from "react-parallax-tilt";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { useRef } from "react";
+import type { LucideIcon } from "lucide-react";
 import { 
   Users, Lightbulb, Brain, BarChart3, Search, 
   Activity, MessageSquare, Users2, RefreshCw, Clock,
-  Code2, Database, Layout, Smartphone, Settings, Cpu
+  Code2, Database, Layout, Settings, Cpu
 } from "lucide-react";
 
 interface Skill {
   name: string;
   category: string;
   level: number; // 0-100
-  icon?: any;
+  icon?: LucideIcon;
   highlight?: boolean;
 }
 
@@ -41,7 +42,7 @@ const coreStrengths: Skill[] = [
   { name: "Time Management", category: "Soft Skill", level: 88, icon: Clock },
 ];
 
-function SkillCard({ skill, index, scrollYProgress }: { skill: Skill; index: number; scrollYProgress: any }) {
+function SkillCard({ skill, index, scrollYProgress }: { skill: Skill; index: number; scrollYProgress: MotionValue<number> }) {
   const yOffset = index % 2 === 0 ? -30 : 30;
   const y = useTransform(scrollYProgress, [0, 1], [yOffset, 0]);
   

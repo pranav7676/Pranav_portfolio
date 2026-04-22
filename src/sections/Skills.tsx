@@ -2,7 +2,7 @@
 
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { AnimatedText } from "@/components/ui/AnimatedText";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, type MotionValue } from "framer-motion";
 import { useRef } from "react";
 import { SkillsGlass } from "@/components/ui/SkillsGlass";
 
@@ -21,7 +21,7 @@ const allSkills = [
   "Machine Learning", "OpenAI APIs", "Data Analysis", "NLP Fundamentals"
 ];
 
-function SkillItem({ skill, index, scrollYProgress }: { skill: string; index: number; scrollYProgress: any }) {
+function SkillItem({ skill, index, scrollYProgress }: { skill: string; index: number; scrollYProgress: MotionValue<number> }) {
   const total = allSkills.length;
   // Use a smaller window for focus to make it feel snappier
   const position = index / (total - 1);
@@ -122,7 +122,7 @@ export function Skills() {
         <div className="px-6 md:px-12 lg:px-24 mb-16">
           <AnimatedText text="Technical Powerhouse" el="h3" className="text-3xl md:text-5xl font-bold mb-4" />
           <p className="text-[--color-soft-neutral] text-lg max-w-xl">
-            A deep dive into the frameworks and languages I've mastered.
+            A deep dive into the frameworks and languages I&apos;ve mastered.
           </p>
         </div>
         <SkillsGlass category="technical" />

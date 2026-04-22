@@ -2,30 +2,27 @@
 
 import { AnimatedText } from "@/components/ui/AnimatedText";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
-import { SplineScene } from "@/components/3d/SplineScene";
 import { motion } from "framer-motion";
-
+import { ParallaxDepthLayers } from "@/components/layout/ParallaxDepthLayers";
+import { ParallaxWrapper } from "@/components/layout/ParallaxWrapper";
+import HudHexProfile from "@/components/HudHexProfile";
 import HeroText from "@/components/ui/HeroText";
 
 export function Hero() {
   return (
     <section className="relative h-screen w-full flex items-center justify-start overflow-hidden">
-      {/* Background Environment Scene */}
-      <SplineScene 
-        sceneUrl="https://my.spline.design/boxeshover-RAglKuhzdaTmleyw3f1YidlD/"
-        className="opacity-60 mix-blend-screen"
-        interactive={false}
+      <ParallaxDepthLayers />
+
+      <motion.div
+        className="absolute inset-y-0 right-[-15%] z-10 h-full w-[48vw] min-w-[22rem] rounded-full border border-white/10 bg-gradient-to-b from-white/10 to-transparent blur-[1px]"
+        initial={{ opacity: 0, scale: 0.88, x: 60 }}
+        animate={{ opacity: 0.9, scale: 1, x: 0 }}
+        transition={{ duration: 1.1, delay: 0.25, ease: "easeOut" }}
       />
 
-      {/* Hero Character Scene */}
-      <SplineScene 
-        sceneUrl="https://my.spline.design/nexbotrobotcharacterconcept-q1n94DACLW8ZCKW6NjVWfj6F/"
-        className="z-10 translate-x-[20%] md:translate-x-[25%] lg:translate-x-[30%] scale-150"
-        interactive={true}
-      />
-
+      <div className="relative z-20 mx-auto flex h-full w-full max-w-7xl items-center justify-between px-6 md:px-12 lg:px-24">
       {/* Content */}
-      <div className="relative z-20 px-6 md:px-12 lg:px-24 w-full md:w-1/2 flex flex-col items-start gap-6 pointer-events-none">
+      <div className="w-full md:w-1/2 flex flex-col items-start gap-6 pointer-events-none">
         
         {/* Open to Work Badge */}
         <motion.div 
@@ -77,6 +74,13 @@ export function Hero() {
             Contact Me
           </AnimatedButton>
         </motion.div>
+      </div>
+
+      <div className="hidden md:flex w-1/2 items-center justify-center pointer-events-none">
+        <ParallaxWrapper intensity={14} className="pointer-events-auto">
+          <HudHexProfile />
+        </ParallaxWrapper>
+      </div>
       </div>
     </section>
   );

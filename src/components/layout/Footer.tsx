@@ -1,7 +1,7 @@
 "use client";
 
 import { Mail } from "lucide-react";
-import { GithubIcon, LinkedinIcon, TwitterIcon } from "@/components/ui/Icons";
+import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
 import Link from "next/link";
 
 const socialLinks = [

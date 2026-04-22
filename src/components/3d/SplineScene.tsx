@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 interface SplineSceneProps {
@@ -12,15 +11,8 @@ interface SplineSceneProps {
 }
 
 export function SplineScene({ sceneUrl, className, interactive = true, fadeOnScroll = false }: SplineSceneProps) {
-  const [isMounted, setIsMounted] = useState(false);
   const { scrollY } = useScroll();
   const opacity = useTransform(scrollY, [0, 500], [1, 0.2]);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return null;
 
   return (
     <motion.div

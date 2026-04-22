@@ -1,76 +1,132 @@
 "use client";
 
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedText } from "@/components/ui/AnimatedText";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { ExternalLink, Monitor, Smartphone, Cpu } from "lucide-react";
+import { GithubIcon } from "@/components/ui/Icons";
 
 const projects = [
   {
     title: "Real-Time Bus Tracking",
     description: "An interactive, real-time IoT and web application tracking campus buses, reducing wait times.",
     tags: ["Next.js", "WebSockets", "IoT"],
+    icon: <Monitor className="w-5 h-5" />,
+    stats: { performance: "98%", latency: "24ms" }
   },
   {
     title: "Finwise",
     description: "AI-powered finance platform analyzing spending habits and providing actionable forecasting.",
-    tags: ["React", "Python", "Machine Learning"],
+    tags: ["React", "Python", "ML"],
+    icon: <Cpu className="w-5 h-5" />,
+    stats: { accuracy: "94%", users: "1.2k" }
   },
   {
     title: "Vintage Vault",
-    description: "E-commerce platform specialized in vintage artifacts. Features secure payments and 3D product preview.",
-    tags: ["Node.js", "Three.js", "Stripe"],
+    description: "E-commerce platform specialized in vintage artifacts. Features secure payments and 3D preview.",
+    tags: ["Three.js", "Node.js", "Stripe"],
+    icon: <Smartphone className="w-5 h-5" />,
+    stats: { uptime: "99.9%", loadTime: "0.8s" }
   },
 ];
 
 function ProjectCard({ project }: { project: typeof projects[0] }) {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  const sheenX = useTransform(mouseXSpring, [-0.5, 0.5], ["0%", "100%"]);
+  const sheenY = useTransform(mouseYSpring, [-0.5, 0.5], ["0%", "100%"]);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
   }
 
   return (
     <motion.div
-      whileHover={{ y: -10, scale: 1.02 }}
       onMouseMove={handleMouseMove}
-      className="group relative flex flex-col justify-between rounded-2xl border border-[--color-secondary-neutral] bg-white/[0.04] p-8 overflow-hidden h-full"
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      className="group relative flex flex-col justify-between rounded-[2rem] border border-white/10 bg-white/[0.02] p-8 overflow-hidden h-[420px] transition-colors hover:border-[--color-primary-accent]/30"
     >
-      <motion.div
-        className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100 mix-blend-screen"
+      {/* Holographic Sheen */}
+      <motion.div 
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-20 transition-opacity duration-500"
         style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              400px circle at ${mouseX}px ${mouseY}px,
-              rgba(250, 237, 38, 0.15),
-              transparent 80%
-            )
-          `,
+          background: useMotionTemplate`radial-gradient(600px circle at ${sheenX} ${sheenY}, var(--color-primary-accent), transparent 40%)`
         }}
       />
       
-      <div className="relative z-10">
-        <h3 className="text-2xl font-bold text-white mb-3">{project.title}</h3>
-        <p className="text-[--color-soft-neutral] mb-6 leading-relaxed">
+      {/* Grid Pattern Background */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8882_1px,transparent_1px),linear-gradient(to_bottom,#8882_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20" />
+
+      <div className="relative z-10" style={{ transform: "translateZ(40px)" }}>
+        <div className="flex items-center justify-between mb-6">
+          <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-[--color-primary-accent] group-hover:shadow-[0_0_15px_rgba(250,237,38,0.2)] transition-all">
+            {project.icon}
+          </div>
+          <div className="flex gap-3">
+            <a href="#" className="text-white/20 hover:text-white transition-colors cursor-pointer">
+              <GithubIcon size={18} />
+            </a>
+            <a href="#" className="text-white/20 hover:text-white transition-colors cursor-pointer">
+              <ExternalLink size={18} />
+            </a>
+          </div>
+        </div>
+
+        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-[--color-primary-accent] transition-colors">
+          {project.title}
+        </h3>
+        <p className="text-sm text-[--color-soft-neutral] mb-6 leading-relaxed line-clamp-3">
           {project.description}
         </p>
-        <div className="flex flex-wrap gap-2 mb-8">
+
+        <div className="flex flex-wrap gap-2 mb-8" style={{ transform: "translateZ(20px)" }}>
           {project.tags.map((tag, i) => (
-            <span key={i} className="px-3 py-1 text-xs font-medium bg-[--color-secondary-neutral]/30 text-[--color-soft-neutral] rounded-full border border-[--color-secondary-neutral]/50">
+            <span key={i} className="px-3 py-1 text-[10px] font-mono uppercase tracking-wider bg-white/5 text-[--color-primary-accent] rounded-md border border-[--color-primary-accent]/20">
               {tag}
             </span>
           ))}
         </div>
       </div>
       
-      <div className="relative z-10 mt-auto pt-4 border-t border-[--color-secondary-neutral]/30">
-        <AnimatedButton variant="secondary" className="w-full text-sm py-2">
-          View Details
+      <div className="relative z-10 mt-auto pt-6 border-t border-white/5 flex items-center justify-between" style={{ transform: "translateZ(30px)" }}>
+        <div className="flex gap-4">
+          {Object.entries(project.stats).map(([key, val], i) => (
+            <div key={i} className="flex flex-col">
+              <span className="text-[9px] uppercase tracking-tighter text-white/30">{key}</span>
+              <span className="text-xs font-mono text-white/80">{val}</span>
+            </div>
+          ))}
+        </div>
+        <AnimatedButton variant="secondary" className="px-6 py-2 text-xs !rounded-xl">
+          View Live
         </AnimatedButton>
+      </div>
+
+      {/* Decorative Corner Scan */}
+      <div className="absolute bottom-0 right-0 p-4 opacity-10 group-hover:opacity-40 transition-opacity">
+        <div className="w-12 h-12 border-b-2 border-r-2 border-[--color-primary-accent] rounded-br-2xl" />
       </div>
     </motion.div>
   );
