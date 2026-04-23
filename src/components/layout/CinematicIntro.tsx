@@ -46,76 +46,99 @@ export function CinematicIntro() {
   const particles = useMemo(() => createFilmParticles(26), []);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isClosingRef = useRef(false);
+  const fadeIntervalRef = useRef<number | null>(null);
+  const overlayTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      audioRef.current = new Audio("/intro.mp3");
-      audioRef.current.loop = true;
-      audioRef.current.volume = 0.6;
+    if (typeof window === "undefined") return;
 
-      // Attempt autoplay
-      const playAudio = async () => {
-        try {
-          if (audioRef.current) {
-            await audioRef.current.play();
-          }
-        } catch (err) {
-          console.warn("Autoplay blocked. Audio will start on first user interaction.", err);
-        }
-      };
-      
-      playAudio();
+    // Only initialize audio once
+    if (audioRef.current) return;
 
-      // Fallback: start playing on first interaction if autoplay failed
-      const onInteraction = () => {
+    // Create and configure audio element
+    const audio = new Audio("/intro.mp3");
+    audio.loop = true;
+    audio.volume = 0.6;
+    audioRef.current = audio;
+
+    // Try autoplay
+    const playAudio = async () => {
+      try {
+        await audio.play();
+        console.log("Audio playing on load");
+      } catch (err) {
+        console.log("Autoplay blocked, waiting for user interaction");
+      }
+    };
+    
+    playAudio();
+
+    // Fallback listener for user interaction
+    const onUserInteraction = async () => {
+      try {
         if (audioRef.current && audioRef.current.paused) {
-          console.log("User interacted. Starting audio playback...");
-          audioRef.current.play().then(() => {
-            console.log("Audio playing successfully.");
-          }).catch((err) => {
-            console.error("Audio playback failed even after interaction:", err);
-          });
+          await audioRef.current.play();
+          console.log("Audio started on user interaction");
         }
-        // Cleanup all listeners
-        window.removeEventListener("mousemove", onInteraction);
-        window.removeEventListener("mousedown", onInteraction);
-        window.removeEventListener("touchstart", onInteraction);
-        window.removeEventListener("keydown", onInteraction);
-      };
-      
-      window.addEventListener("mousemove", onInteraction, { once: true });
-      window.addEventListener("mousedown", onInteraction, { once: true });
-      window.addEventListener("touchstart", onInteraction, { once: true });
-      window.addEventListener("keydown", onInteraction, { once: true });
+      } catch (err) {
+        console.error("Audio playback failed:", err);
+      }
+    };
+    
+    // Use once: true in addEventListener to automatically remove after first trigger
+    window.addEventListener("mousemove", onUserInteraction, { once: true });
+    window.addEventListener("mousedown", onUserInteraction, { once: true });
+    window.addEventListener("touchstart", onUserInteraction, { once: true });
+    window.addEventListener("keydown", onUserInteraction, { once: true });
 
-      return () => {
-        window.removeEventListener("mousemove", onInteraction);
-        window.removeEventListener("mousedown", onInteraction);
-        window.removeEventListener("touchstart", onInteraction);
-        window.removeEventListener("keydown", onInteraction);
-        if (audioRef.current) {
-          audioRef.current.pause();
-        }
-      };
-    }
+    return () => {
+      // Remove all listeners if component unmounts before interaction
+      window.removeEventListener("mousemove", onUserInteraction);
+      window.removeEventListener("mousedown", onUserInteraction);
+      window.removeEventListener("touchstart", onUserInteraction);
+      window.removeEventListener("keydown", onUserInteraction);
+      
+      // Pause audio on unmount
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
   }, []);
 
   const closeIntro = useCallback(() => {
+    if (isClosingRef.current) return;
+    isClosingRef.current = true;
+
     setVisible(false);
     setShowOverlay(true);
-    
-    setTimeout(() => setShowOverlay(false), 1200);
+
+    if (overlayTimeoutRef.current !== null) {
+      window.clearTimeout(overlayTimeoutRef.current);
+    }
+    overlayTimeoutRef.current = window.setTimeout(() => {
+      setShowOverlay(false);
+      overlayTimeoutRef.current = null;
+    }, 1200);
 
     // Fade out audio gracefully during the 1.2s transition
     if (audioRef.current) {
+      if (fadeIntervalRef.current !== null) {
+        window.clearInterval(fadeIntervalRef.current);
+      }
+
       let volume = audioRef.current.volume;
-      const fade = setInterval(() => {
+      fadeIntervalRef.current = window.setInterval(() => {
         if (volume > 0.05) {
           volume -= 0.05;
           if (audioRef.current) audioRef.current.volume = volume;
         } else {
           if (audioRef.current) audioRef.current.pause();
-          clearInterval(fade);
+          if (audioRef.current) audioRef.current.volume = 0;
+          if (fadeIntervalRef.current !== null) {
+            window.clearInterval(fadeIntervalRef.current);
+            fadeIntervalRef.current = null;
+          }
         }
       }, 100);
     }
@@ -131,13 +154,28 @@ export function CinematicIntro() {
     timers.push(window.setTimeout(() => setPhase(4), 3200));
 
     const closeOnScroll = () => closeIntro();
-    window.addEventListener("scroll", closeOnScroll, { passive: true });
+    window.addEventListener("scroll", closeOnScroll, { passive: true, once: true });
+    window.addEventListener("wheel", closeOnScroll, { passive: true, once: true });
+    window.addEventListener("touchmove", closeOnScroll, { passive: true, once: true });
 
     return () => {
       window.removeEventListener("scroll", closeOnScroll);
+      window.removeEventListener("wheel", closeOnScroll);
+      window.removeEventListener("touchmove", closeOnScroll);
       timers.forEach((timer) => window.clearTimeout(timer));
     };
   }, [visible, closeIntro]);
+
+  useEffect(() => {
+    return () => {
+      if (overlayTimeoutRef.current !== null) {
+        window.clearTimeout(overlayTimeoutRef.current);
+      }
+      if (fadeIntervalRef.current !== null) {
+        window.clearInterval(fadeIntervalRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (!visible || phase !== 2) return;
@@ -182,8 +220,8 @@ export function CinematicIntro() {
         <motion.div
           onClick={closeIntro}
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, filter: "brightness(1.2) blur(3px)" }}
-          transition={{ duration: 1.05, ease: "easeInOut" }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.55, ease: "easeInOut" }}
           className="fixed inset-0 z-[320] overflow-hidden bg-black"
           role="button"
           tabIndex={0}

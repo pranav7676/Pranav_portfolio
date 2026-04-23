@@ -14,7 +14,7 @@ const allSkills = [
   // Languages
   "JavaScript", "TypeScript", "Python", "C++", "SQL",
   // Tools
-  "Git", "GitHub", "Vercel", "Netlify", "Postman",
+  "Git", "GitHub", "Vercel", "Netlify",
   // Design
   "Figma", "Framer", "Photoshop", "Spline", "Canva",
   // AI & Data

@@ -108,10 +108,10 @@ export function Achievements() {
       className: "md:col-span-2 md:row-span-2 bg-gradient-to-br from-white/[0.05] to-transparent",
     },
     {
-      title: "Defy'26 Winner",
-      type: "Competition",
+      title: "Defy'26 Participant",
+      type: "Hackathon Participation",
       icon: <Trophy strokeWidth={1.5} />,
-      desc: "Secured first place at Defy'26, building a scalable architecture for real-time systems.",
+      desc: "Participated in Defy'26, building a scalable architecture for real-time systems.",
       className: "md:col-span-2",
     },
     {
@@ -122,10 +122,10 @@ export function Achievements() {
       className: "md:col-span-1",
     },
     {
-      title: "Hackhazards Elite",
-      type: "Hackathon",
+      title: "Hackhazards Participant",
+      type: "Hackathon Participation",
       icon: <ShieldCheck strokeWidth={1.5} />,
-      desc: "Top-tier ranking in intense 48-hour development sprints, focusing on AI safety.",
+      desc: "Participated in an intense 48-hour development sprint focused on AI safety.",
       className: "md:col-span-1",
     },
   ];

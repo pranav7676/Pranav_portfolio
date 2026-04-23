@@ -1,15 +1,39 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 
 export function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const reduceMotion = useReducedMotion();
+  const [enabled, setEnabled] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
+  const pointerX = useMotionValue(-100);
+  const pointerY = useMotionValue(-100);
+
+  const x = useSpring(pointerX, { stiffness: 500, damping: 28, mass: 0.5 });
+  const y = useSpring(pointerY, { stiffness: 500, damping: 28, mass: 0.5 });
+
   useEffect(() => {
+    if (reduceMotion) return;
+
+    const media = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const syncEnabled = () => setEnabled(media.matches);
+
+    syncEnabled();
+    media.addEventListener("change", syncEnabled);
+
+    return () => {
+      media.removeEventListener("change", syncEnabled);
+    };
+  }, [reduceMotion]);
+
+  useEffect(() => {
+    if (!enabled) return;
+
     const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      pointerX.set(e.clientX - 12);
+      pointerY.set(e.clientY - 12);
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -34,17 +58,18 @@ export function CustomCursor() {
       window.removeEventListener("mousemove", updateMousePosition);
       window.removeEventListener("mouseover", handleMouseOver);
     };
-  }, []);
+  }, [enabled, pointerX, pointerY]);
+
+  if (reduceMotion || !enabled) {
+    return null;
+  }
 
   return (
     <>
       <motion.div
         className="fixed top-0 left-0 w-6 h-6 rounded-full pointer-events-none z-50 flex items-center justify-center mix-blend-screen"
-        animate={{
-          x: mousePosition.x - 12,
-          y: mousePosition.y - 12,
-          scale: isHovering ? 2 : 1,
-        }}
+        style={{ x, y }}
+        animate={{ scale: isHovering ? 2 : 1 }}
         transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.5 }}
       >
         <div
