@@ -114,7 +114,7 @@ export function SkillsGlass({ category }: { category: "technical" | "core" }) {
   });
 
   return (
-    <div ref={ref} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 px-6 md:px-12 lg:px-24 max-w-full mx-auto pb-12">
+    <div ref={ref} className="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 px-6 md:px-12 lg:px-24 max-w-full mx-auto pb-12">
       {skills.map((skill, i) => (
         <SkillCard 
           key={skill.name} 
